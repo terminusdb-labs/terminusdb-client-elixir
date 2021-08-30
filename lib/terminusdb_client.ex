@@ -3,19 +3,6 @@ defmodule TerminusDBClient do
   Documentation for `TerminusDBClient`.
   """
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> TerminusDBClient.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
   defp create_request(client, method, route, params \\ %{}, body \\ nil) do
     headers =
       if client.token do
@@ -113,6 +100,11 @@ defmodule TerminusDBClient do
       })
 
     HTTPoison.request(request) |> handle_result()
+  end
+
+  def delete_db(client, db) do
+    url = "/api/db/" <> client.team <> "/" <> db
+    create_request(client, :delete, url) |> HTTPoison.request() |> handle_result()
   end
 
   def request_schema(client, db) do
